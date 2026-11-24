@@ -1,6 +1,6 @@
 import { Check, Heart, Sun, Moon } from "lucide-react";
 
-function Header() {
+function Header({ theme, onThemeChange }) {
   return (
     <header className="header">
       <div className="brand">
@@ -17,10 +17,24 @@ function Header() {
         </div>
       </div>
       <div className="theme-toggle">
-        <button className="theme-btn active">
+        <button
+          type="button"
+          className={`theme-btn ${theme === "light" ? "active" : ""}`}
+          onClick={() => onThemeChange("light")}
+          aria-label="Light theme"
+          aria-pressed={theme === "light"}
+          title="Light theme"
+        >
           <Sun />
         </button>
-        <button className="theme-btn">
+        <button
+          type="button"
+          className={`theme-btn ${theme === "dark" ? "active" : ""}`}
+          onClick={() => onThemeChange("dark")}
+          aria-label="Dark theme"
+          aria-pressed={theme === "dark"}
+          title="Dark theme"
+        >
           <Moon />
         </button>
       </div>

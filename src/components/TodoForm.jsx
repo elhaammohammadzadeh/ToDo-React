@@ -5,7 +5,7 @@ function TodoForm({ onAdd }) {
   const inputRef = useRef();
 
   const add = (e) => {
-    e.preventDefault;
+    e.preventDefault();
     const inputText = inputRef.current.value.trim();
     if (!inputText) return;
     onAdd(inputText);
@@ -13,12 +13,7 @@ function TodoForm({ onAdd }) {
   };
 
   return (
-    <form
-      onSubmit={() => {
-        add();
-      }}
-      className="add-form"
-    >
+    <form onSubmit={add} className="add-form">
       <div className="input-wrap">
         <span className="input-icon">
           <CirclePlus size={20} />
