@@ -19,10 +19,16 @@ const getInitialTodos = () => {
     return [];
   }
 };
+const filterTodos = (todos, filter) => {
+  if (filter === "active") return todos.filter((todo) => !todo.isComplete);
+  if (filter === "completed") return todos.filter((todo) => todo.isComplete);
+  return todos;
+};
 
 function App() {
   const [todolist, setTodolist] = useState(getInitialTodos);
   const [theme, setTheme] = useState(getInitialTheme);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todolist));
@@ -32,6 +38,8 @@ function App() {
     document.documentElement.dataset.theme = theme;
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  const visibleTodos = filterTodos(todolist, filter);
 
   const addTodo = (text) => {
     const newTodo = {
@@ -64,9 +72,13 @@ function App() {
       <main className="card">
         <Header theme={theme} onThemeChange={setTheme} />
         <TodoForm onAdd={addTodo} />
-        <TodoFilters todos={todolist} />
-        <TodoList
+        <TodoFilters
           todos={todolist}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
+        <TodoList
+          todos={visibleTodos}
           onToggle={toggleTodo}
           onDelete={deleteTodo}
           onUpdate={updateTodo}

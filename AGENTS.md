@@ -14,7 +14,8 @@ There is no test runner and no CI. Do not invent test commands; verify with `npm
 
 ## Architecture
 
-- `src/App.jsx` owns all state (`todolist`, `theme`) and every todos operation. Components in `src/components/` are presentational and receive callbacks via props — there is no Context.
+- `src/App.jsx` owns all state (`todolist`, `theme`, `filter`) and every todos operation. Components in `src/components/` are presentational and receive callbacks via props — there is no Context. `visibleTodos` is derived during render from `filter` and passed to `TodoList`; `TodoFilters` receives the full list plus `filter`/`onFilterChange`.
+- Filter values are `"all"`, `"active"`, and `"completed"`; active means `!todo.isComplete`.
 - Todo shape: `{ id: Date.now(), text, isComplete }`. `id` is a timestamp, so code must not rely on string IDs.
 - Persistence lives in `App.jsx` effects: `localStorage["todos"]` stores the JSON array, `localStorage["theme"]` stores `"dark"` (default) or `"light"`. Initial reads are guarded (`getInitialTodos`), so keep new stored data validated before use.
 - Theme is applied as `data-theme="light"` on `<html>`; colors are CSS variables defined in `src/App.css` (`:root` is the dark theme, `[data-theme="light"]` overrides it). Add new colors as variables instead of hardcoding.
@@ -22,9 +23,7 @@ There is no test runner and no CI. Do not invent test commands; verify with `npm
 
 ## Known gaps — do not assume these work
 
-- `TodoFilters` renders only an `All` button plus a literal `…`; filtering is unimplemented.
 - `Footer`'s "Clear Completed" is wired to `clearAll` and deletes **all** todos, not only completed ones.
-- The pencil button in `TodoItem` has no handler; the edit feature was deliberately removed.
 - UI copy is English; keep new UI text consistent rather than translating it.
 
 ## Gotchas
